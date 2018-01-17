@@ -17,7 +17,12 @@ from django.contrib import admin
 from django.urls import path
 from  web_platform import views
 urlpatterns = [
+    path(r'test', views.html_test),
     path('admin/', admin.site.urls),
-    path(r'devices_phone',views.get_devices),
-    path(r'test',views.html_test),
+    path(r'index', views.index),
+    path(r'devices_phone', views.get_devices),
+    path(r'task', views.task),
+    path(r'report', views.report),
+    path(r'set_up',views.set_up),
+
 ]
