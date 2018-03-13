@@ -38,7 +38,7 @@
                     a: 50,
                     b: 40
                 }, {
-                    y: '2009',
+                    y: '2000009',
                     a: 75,
                     b: 65
                 }, {
@@ -50,7 +50,7 @@
                     a: 75,
                     b: 65
                 }, {
-                    y: '2012',
+                    y: '2018',
                     a: 100,
                     b: 90
                 }],
@@ -69,10 +69,10 @@
                     label: "Download Sales",
                     value: 12
                 }, {
-                    label: "In-Store Sales",
-                    value: 30
+                    label: "In-St00000ore Sales",
+                    value: 50
                 }, {
-                    label: "Mail-Order Sales",
+                    label: "Mail-Or0000der Sales",
                     value: 20
                 }],
                 resize: true
