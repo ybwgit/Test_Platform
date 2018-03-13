@@ -1,0 +1,531 @@
+{% extends 'head.html' %}
+{% block content %}
+   <!-- /. 开头的基本的结构  -->
+            <div id="page-wrapper" >
+            <div id="page-inner">
+			 <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                           {{ the_project_name }}  <small>kktest</small>
+                        </h1>
+                    </div>
+                </div>
+  <!-- /. 结束  -->
+
+
+{% if   not look_source_file %}
+ <!-- /. ROW  测试记录模块 -->
+            <!-- /. ROW  -->
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            项目管理
+                        </div>
+                        <div class="panel-body">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#home" data-toggle="tab">用例管理</a></li>
+
+                                <li class=""><a href="#messages" data-toggle="tab">API脚本管理</a></li>
+
+                                <li class=""><a href="#UI_case" data-toggle="tab">UI脚本管理</a></li>
+                            </ul>
+
+                            <div class="tab-content">
+                                <div class="tab-pane fade active in" id="home">
+                                   {%  for key,value in text_case_list.items %}
+                                    {% if key == the_project_name %}
+                                        {%  for y in value.0 %}
+                                             <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#{{y}}" class="collapsed">  {{y}}</a>
+                                        </h4>
+                                            </div>
+                                             <div id="{{y}}" class="panel-collapse collapse" style="height: 0px;">
+
+                                        <div class="panel-body">
+
+                                        <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>id</th>
+                                            <th>module_name</th>
+                                            <th>case_name</th>
+                                             <th>revise</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {%  for z in value.1 %}
+                                             {% if z.2 == y %}
+                                          <tr>
+                                            <td>{{ z.0}}</td>
+                                            <td>{{ z.2}}</td>
+                                            <td>{{ z.3 }}</td>
+                                            <td><a href="#" class="btn btn-default btn-sm" data-toggle="modal"   data-target="#{{ z.3}}" >查看</a></td>
+                                          </tr>
+                                             <div class="modal fade" id="{{ z.3}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <form  method="POST"  >
+                                                            {% csrf_token %}
+                                     <div class="form-group"  hidden="hidden" >
+                                            <label>用例id(id)</label>
+                                            <input class="form-control"  name="text_case_id"   value = "{{ z.0 }}">
+                                        </div>
+                                    <div class="form-group" hidden="hidden" >
+                                            <label>项目名(project_name)</label>
+                                            <input class="form-control" required ='required '  value = "{{ z.1 }}"  name="text_project_name" >
+                                        </div>
+                                    <div class="form-group" hidden="hidden" >
+                                            <label>模块名(module_name)</label>
+                                            <input class="form-control"  required ='required '  value = "{{ z.2 }}" name="text_module_name" >
+                                        </div>
+                                     <div class="form-group" hidden="hidden" >
+                                            <label>用例名(case_name)</label>
+                                         <input class="form-control" rows="5" required ='required '  value = "{{ z.3 }}" name="text_case_name"   >
+                                        </div>
+                                     <div class="form-group">
+                                            <label>操作步骤(operation_steps)</label>
+                                         <textarea class="form-control" rows="5"    required ='required '  name="text_operation_steps" >{{ z.4 }}</textarea>
+                                        </div>
+                                     <div class="form-group">
+                                            <label>预期结果(expected_results)</label>
+                                         <textarea class="form-control" rows="5"  required ='required '   name="text_expected_results" >{{ z.5 }}</textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>备注(remarks)</label>
+                                            <textarea class="form-control" rows="5"  class="form-control"     name="text_remarks" >{{ z.6 }}</textarea>
+                                        </div>
+                                         <div class="form-group">
+                                            <label>app版本(App_version)</label>
+                                            <input class="form-control"  required ='required ' value = "{{ z.7 }}"  name="text_App_version" >
+                                        </div>
+                                         <div class="form-group">
+                                            <label>脚本类型(script_type)</label>
+                                            <input class="form-control"    value = "{{ z.8 }}"  name="text_script_type" >
+                                        </div>
+                                     <div class="form-group">
+                                            <label>脚本地址(script_address)</label>
+                                            <input class="form-control"    value = "{{ z.9 }}"  name="text_script_address" >
+                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <input     hidden="hidden"  name="the_project_name" value="{{ the_project_name }}">
+                                                            <button type="submit"  id="add_text_case_butt" class="btn btn-default"  name="add_text_case"  value="add_text_case"  >修改case</button>
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div></form>
+                                    </div>
+                                </div> </div>
+                                            {% endif %}
+                                            {% endfor %}
+
+                                    </tbody>
+
+                                </table>
+
+
+                                        </div>
+                                    </div>
+
+
+                                        {% endfor %}
+                                    {% endif %}
+
+                                {% endfor %}
+		<td>
+                                            <center><button class="btn btn-success" data-toggle="modal" data-target="#textcase">
+                                             添加
+                                            </button></center></td>
+                                                <div class="modal fade" id="textcase" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <form  method="POST"  >
+                                                            {% csrf_token %}
+                                     <div class="form-group"  hidden="hidden" >
+                                            <label>用例id(id)</label>
+                                            <input class="form-control"  name="text_case_id"   value = "{{ z.0 }}">
+                                        </div>
+                                    <div class="form-group"  hidden="hidden" >
+                                            <label>项目名(project_name)</label>
+                                            <input class="form-control" required ='required '  value = "{{ the_project_name }}"  name="text_project_name" >
+                                        </div>
+                                    <div class="form-group">
+                                            <label>模块名(module_name)</label>
+                                            <input class="form-control"  required ='required '  value = "{{ z.2 }}" name="text_module_name" >
+                                        </div>
+                                     <div class="form-group">
+                                            <label>用例名(case_name)</label>
+                                            <input class="form-control" required ='required '  value = "{{ z.3 }}" name="text_case_name"   >
+                                        </div>
+                                     <div class="form-group">
+                                            <label>操作步骤(operation_steps)</label>
+                                         <textarea class="form-control" rows="5"  required ='required '    name="text_operation_steps" > {{ z.4 }}</textarea>
+                                        </div>
+                                     <div class="form-group">
+                                            <label>预期结果(expected_results)</label>
+                                            <textarea class="form-control"  rows="5"  required ='required '    name="text_expected_results" >{{ z.5 }} </textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>备注(remarks)</label>
+                                            <textarea class="form-control"  rows="5"     name = "text_remarks" >{{ z.6 }}</textarea>
+                                        </div>
+                                         <div class="form-group">
+                                            <label>app版本(App_version)</label>
+                                            <input class="form-control"  required ='required ' value = "{{ z.7 }}"  name="text_App_version" >
+                                        </div>
+                                         <div class="form-group">
+                                            <label>脚本类型(script_type)</label>
+                                            <input class="form-control"    value = "{{ z.8 }}"  name="text_script_type" >
+                                        </div>
+                                     <div class="form-group">
+                                            <label>脚本地址(script_address)</label>
+                                            <input class="form-control"    value = "{{ z.9 }}"  name="text_script_address" >
+                                        </div>
+
+                                                        <div class="modal-footer">
+                                                                                                                            <input     hidden="hidden"  name="the_project_name" value="{{ the_project_name }}">
+
+                                                            <button type="submit"  id="add_text_case_butt" class="btn btn-default"  name="add_text_case"  value="now_add_text_case"  >修改case</button>
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div></form>
+                                    </div>
+                                </div> </div>
+
+
+
+
+                                </div>
+                                <div class="tab-pane fade" id="profile">
+                                    <p>lendeidatat.</p>
+                                </div>
+                                <div class="tab-pane fade" id="messages">
+
+                                    <div class="panel-group" id="accordion">
+                                <div class="panel panel-default">
+                            <div class="panel-group" id="accordion">
+                                {%  for key,value in case_list.items %}
+                                    {% if key == the_project_name %}
+                                        {%  for y in value.0 %}
+                                             <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#{{ y }}" class="collapsed">  {{ y }}</a>
+                                        </h4>
+                                            </div>
+                                             <div id="{{ y }}" class="panel-collapse collapse" style="height: 0px;">
+
+                                        <div class="panel-body">
+
+                                        <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>id</th>
+                                            <th>APIname</th>
+                                            <th>case_name</th>
+                                             <th>revise_case</th>
+                                             <th>查看源文件</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {%  for z in value.1 %}
+                                             {% if z.5 == y %}
+                                               <form  method="POST"  >
+                                               {% csrf_token %}
+                                          <tr>
+                                            <td>{{ z.0}}</td>
+                                            <td>{{ z.2}}</td>
+                                            <td>{{ z.3 }}</td>
+                                            <td><a href="#" class="btn btn-default btn-sm" data-toggle="modal"   data-target="#{{ z.3}}" >revise</a></td>
+                                            <td><button type="submit"  id="look_source_file" class="btn btn-default"  name="look_source_file"  value="{{ z }}"  >查看</button>  <input     hidden="hidden"  name="the_project_name" value="{{ the_project_name }}"></td>
+                                          </tr></form>
+                                             <div class="modal fade" id="{{ z.3}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <form  method="POST"  >
+                                                            {% csrf_token %}
+                                     <div class="form-group" hidden="hidden">
+                                            <label>用例id(id)</label>
+                                            <input class="form-control"  name="case_id"   value = "{{ z.0 }}">
+                                        </div>
+                                    <div class="form-group" hidden="hidden" >
+                                            <label>项目名(project_name)</label>
+                                            <input class="form-control" required ='required '  value = "{{ z.1 }}"  name="project_name" >
+                                        </div>
+                                    <div class="form-group">
+                                            <label>模块名(module_name)</label>
+                                            <input class="form-control"  required ='required '  value = "{{ z.5 }}" name="module_name" >
+                                        </div>
+                                     <div class="form-group">
+                                            <label>接口名(api_name)</label>
+                                            <input class="form-control" required ='required '  value = "{{ z.2 }}" name="api_name"   >
+                                        </div>
+                                     <div class="form-group">
+                                            <label>用例名(case_name)</label>
+                                            <input class="form-control"  required ='required ' value = "{{ z.3 }}"  name="case_name" >
+                                        </div>
+                                     <div class="form-group">
+                                            <label>用例地址(case_address)</label>
+                                            <input class="form-control"  required ='required ' value = "{{ z.4 }}"  name="case_address" >
+                                        </div>
+                                     <div class="form-group">
+                                            <label>用例对应的app版本(App_version)</label>
+                                            <input  required ='required ' class="form-control"   value = "{{ z.6 }}"       name="App_version" >
+                                        </div>
+
+                                                        <div class="modal-footer">
+                                                                                                                            <input     hidden="hidden"  name="the_project_name" value="{{ the_project_name }}">
+
+                                                            <button type="submit"  id="add_api_case_butt" class="btn btn-success"  name="add_api_case"  value="add_api_case"  >添加case</button>
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div></form>
+                                    </div>
+                                </div> </div>
+                                            {% endif %}
+                                            {% endfor %}
+                                    </tbody>
+
+                                </table>
+
+
+                                        </div>
+                                    </div>
+
+
+                                        {% endfor %}
+                                    {% endif %}
+
+                                {% endfor %}
+
+
+                            </div>
+                                     <td>
+                                            <center><button class="btn btn-success" data-toggle="modal" data-target="#add_case">
+                                             添加case
+                                            </button></center></td>
+                                    <div class="modal fade" id="add_case" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <form  method="POST"  >
+                                                            {% csrf_token %}
+                                     <div class="form-group" hidden="hidden" >
+                                            <label>用例id(id)</label>
+                                            <input class="form-control"  name="case_id" placeholder="添加新case不需要填，但是更新case时需要填写对应case的id">
+                                        </div>
+                                    <div class="form-group" hidden="hidden" >
+                                            <label>项目名(project_name)</label>
+                                            <input class="form-control"   value="{{ the_project_name }}"  name="project_name" placeholder="例如“快快减肥”，用例以项目名作为分类标准">
+                                        </div>
+                                    <div class="form-group">
+                                            <label>模块名(module_name)</label>
+                                            <input class="form-control"  required ='required ' name="module_name" placeholder="根据模块名分类case">
+                                        </div>
+                                     <div class="form-group">
+                                            <label>接口名(api_name)</label>
+                                            <input class="form-control" required ='required '  name="api_name"   placeholder="记录接口的名字">
+                                        </div>
+                                     <div class="form-group">
+                                            <label>用例名(case_name)</label>
+                                            <input class="form-control"  required ='required '  name="case_name" placeholder="用例的名字需要和case.py的名字相同">
+                                        </div>
+                                     <div class="form-group">
+                                            <label>用例地址(case_address)</label>
+                                            <input class="form-control"  required ='required '  name="case_address"  placeholder="用例文件在项目目录下的文件夹的地址，地址示例 ： PadGetUserCorrectWeightV2.testCase">
+                                        </div>
+                                     <div class="form-group">
+                                            <label>用例对应的app版本(App_version)</label>
+                                            <input  required ='required ' class="form-control"  name="App_version" placeholder="当前case对应的app版本">
+                                        </div>
+
+                                                        <div class="modal-footer">
+                                                                <input     hidden="hidden"  name="the_project_name" value="{{ the_project_name }}">
+                                                            <button type="submit"  id="add_api_case_butt" class="btn btn-success"  name="add_api_case"  value="add_api_case"  >添加case</button>
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div></form>
+                                    </div>
+                                </div> </div>
+                                </div>
+
+                </div>
+            </div>
+    <div class="tab-pane fade" id="UI_case">
+
+                                    <div class="panel-group" id="accordion">
+                                <div class="panel panel-default">
+                            <div class="panel-group" id="accordion">
+                                {%  for key,value in UI_case_list.items %}
+                                    {% if key == the_project_name %}
+
+                                        {%  for y in value.0 %}
+                                             <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#{{ y }}" class="collapsed">  {{ y }}</a>
+                                        </h4>
+                                            </div>
+                                             <div id="{{ y }}" class="panel-collapse collapse" style="height: 0px;">
+
+                                        <div class="panel-body">
+
+                                        <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>id</th>
+                                            <th>module_name</th>
+                                            <th>case_name</th>
+                                             <th>revise_case</th>
+                                             <th>查看源文件</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {%  for z in value.1 %}
+                                             {% if z.2 == y %}
+                                               <form  method="POST"  >
+                                               {% csrf_token %}
+                                          <tr>
+                                            <td>{{ z.0}}</td>
+                                            <td>{{ z.2}}</td>
+                                            <td>{{ z.3 }}</td>
+                                            <td><a href="#" class="btn btn-default btn-sm" data-toggle="modal"   data-target="#{{ z.3}}" >revise</a></td>
+                                            <td><button type="submit"  id="look_source_file" class="btn btn-default"  name="ui_look_source_file"  value="{{ z }}"  >查看</button>  <input     hidden="hidden"  name="the_project_name" value="{{ the_project_name }}"></td>
+                                          </tr></form>
+           <!-- /. 弹窗  -->
+                                            <div class="modal fade" id="{{ z.3}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <form  method="POST"  >
+                                                            {% csrf_token %}
+                                     <div class="form-group" hidden="hidden">
+                                            <label>用例id(id)</label>
+                                            <input class="form-control"  name="case_id"   value = "{{ z.0 }}">
+                                        </div>
+                                    <div class="form-group" hidden="hidden" >
+                                            <label>项目名(project_name)</label>
+                                            <input class="form-control" required ='required '  value = "{{ z.1 }}"  name="project_name" >
+                                        </div>
+                                    <div class="form-group">
+                                            <label>模块名(module_name)</label>
+                                            <input class="form-control"  required ='required '  value = "{{ z.2 }}" name="module_name" >
+                                        </div>
+
+                                     <div class="form-group">
+                                            <label>用例名(case_name)</label>
+                                            <input class="form-control"  required ='required ' value = "{{ z.3 }}"  name="case_name" >
+                                        </div>
+                                     <div class="form-group">
+                                            <label>用例地址(case_address)</label>
+                                            <input class="form-control"  required ='required ' value = "{{ z.4 }}"  name="case_address" >
+                                        </div>
+                                     <div class="form-group">
+                                            <label>用例对应的app版本(App_version)</label>
+                                            <input  required ='required ' class="form-control"   value = "{{ z.5 }}"       name="App_version" >
+                                        </div>
+                                        <div class="form-group">
+                                            <label>脚本对应的用例id(my_case_of_text_id)</label>
+                                            <input  required ='required ' class="form-control"   value = "{{ z.6 }}"       name="my_case_of_text_id" >
+                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <input     hidden="hidden"  name="the_project_name" value="{{ the_project_name }}">
+                                                            <button type="submit"  id="add_api_case_butt" class="btn btn-success"  name="add_api_case"  value="add_ui_case"  >添加case</button>
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div></form>
+                                    </div>
+                                </div> </div>
+
+                                            {% endif %}
+                                            {% endfor %}
+                                    </tbody>
+
+                                </table>
+
+
+                                        </div>
+                                    </div>
+
+
+                                        {% endfor %}
+                                    {% endif %}
+
+                                {% endfor %}
+
+ <!-- /.  最下面的弹出  -->
+                            </div>
+                                     <td>
+                                            <center><button class="btn btn-success" data-toggle="modal" data-target="#add_ui_case">
+                                             添加case
+                                            </button></center></td>
+                            <div class="modal fade" id="add_ui_case" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <form  method="POST"  >
+                                                            {% csrf_token %}
+                                     <div class="form-group" hidden="hidden" >
+                                            <label>用例id(id)</label>
+                                            <input class="form-control"  name="case_id" placeholder="添加新case不需要填，但是更新case时需要填写对应case的id">
+                                        </div>
+                                    <div class="form-group" hidden="hidden" >
+                                            <label>项目名(project_name)</label>
+                                            <input class="form-control"   value="{{ the_project_name }}"  name="project_name" placeholder="例如“快快减肥”，用例以项目名作为分类标准">
+                                        </div>
+                                    <div class="form-group">
+                                            <label>模块名(module_name)</label>
+                                            <input class="form-control"  required ='required ' name="module_name" placeholder="根据模块名分类case">
+                                        </div>
+                                     <div class="form-group">
+                                            <label>用例名(case_name)</label>
+                                            <input class="form-control"  required ='required '  name="case_name" placeholder="用例的名字需要和case.py的名字相同">
+                                        </div>
+                                     <div class="form-group">
+                                            <label>用例地址(case_address)</label>
+                                            <input class="form-control"  required ='required '  name="case_address"  placeholder="用例文件在项目目录下的文件夹的地址，地址示例 ： PadGetUserCorrectWeightV2.testCase">
+                                        </div>
+                                     <div class="form-group">
+                                            <label>用例对应的app版本(App_version)</label>
+                                            <input  required ='required ' class="form-control"  name="App_version" placeholder="当前case对应的app版本">
+                                        </div>
+                                         <div class="form-group">
+                                            <label>当前脚本对应的用例(my_case_of_text_id)</label>
+                                            <input  required ='required ' class="form-control"  name="my_case_of_text_id" >
+                                        </div>
+
+                                                        <div class="modal-footer">
+                                                                <input     hidden="hidden"  name="the_project_name" value="{{ the_project_name }}">
+                                                            <button type="submit"  id="add_api_case_butt" class="btn btn-success"  name="add_api_case"  value="add_ui_case"  >添加case</button>
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                                        </form>
+                                    </div>
+                                </div> </div>
+                                </div>
+
+                </div>
+            </div>
+
+
+
+
+
+
+     </div>
+
+                    <!-- /. ROW  -->
+                    <!-- /. ROW  -->
+{% endif %}
+
+{% if   look_source_file %}
+    <form  method="POST" >
+    {% csrf_token %}
+      <div class="panel panel-default">
+                        <div class="form-group">
+                            <label>脚本内容</label>
+                                            <textarea class="form-control"   name="case_data" rows="20" >{{ look_source_file }}</textarea>
+                                        </div>
+
+
+      </div>
+        <input     hidden="hidden"  name="the_project_name" value="{{ the_project_name }}">
+    <a href="{{ x.project_address}}">   <button type="submit"  id="updata_case" class="btn btn-default"  name="updata_path"  value="{{ file_path }}" >更新</button></a>
+ <a href="{{ x.project_address}}">  <button type="button" class="btn btn-default" data-dismiss="modal">返回</button></a>
+    </form>
+            {% endif %}
+
+{% endblock %}
